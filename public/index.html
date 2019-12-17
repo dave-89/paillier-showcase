@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="utf-8">
-  <title>demo</title>
-  <meta name="generator" content="Google Web Designer 7.1.1.1210">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remote Paillier HE</title>
   <style type="text/css" id="gwd-text-style">
     p {
       margin: 0px;
@@ -38,23 +38,37 @@
 
     .gwd-p-8j4j {
       position: absolute;
-      width: 140px;
+      /* width: 140px; */
       height: 101px;
       transform-origin: 70px 50.5px 0px;
       text-align: left;
       left: 71px;
       top: 83px;
     }
+
+    /* .my_input {
+      display: flex;
+      flex: auto;
+      justify-items: space-between;
+    } */
   </style>
 </head>
 
 <body class="htmlNoPages" onload="getKeyPair()">
   <div class="gwd-p-8j4j">
-    First number: <input type="number" id="first_number" value="0"></input> <br>
-    Second number: <input type="number" id="second_number" value="0"></input><br>
+    First number: <input class="my_input" type="number" id="first_number" value="0"
+      style="width: 30%; align-content:flex-end;">
+    <div id="cipher1"></div><br>
+    Second number: <input type="number" id="second_number" value="0" style="width: 30%; align-items:flex-end;"></input>
+    <div id="cipher2"></div><br>
     <button onclick="exec()">Add!</button> <br>
-    Result: <div id="result"></div>
+    Result: <div id="result"></div> <br>
+    This is a simple webapp to showcase <a href="https://en.wikipedia.org/wiki/Paillier_cryptosystem">Paillier</a> Homorphic Encryption. <br>
+    Developed in JS with <a href="https://expressjs.com/">ExpressJS</a> and <a href="https://www.npmjs.com/package/paillier-js">paillier-js</a> <br>
+    Source code <a href="https://github.com/dave-89/paillier-showcase">here</a>.
+    </div>
   </div>
+
   <script>
     function getKeyPair() {
       let keyPair;
