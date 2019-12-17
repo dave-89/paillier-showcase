@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js"
     "test": "echo \"Error: no test specified\" && exit 1",
     "browserify": "./node_modules/browserify/bin/cmd.js lib/paillier-front.js  -s paillier -o public/bundle.js",
     "eslint": "./node_modules/eslint/bin/eslint.js --fix index.js lib/"
