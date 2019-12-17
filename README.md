@@ -1,0 +1,1 @@
+[![Known Vulnerabilities](https://snyk.io/test/github/dave-89/paillier-showcase.git/badge.svg)](https://snyk.io/test/github/dave-89/paillier-showcase.git)
