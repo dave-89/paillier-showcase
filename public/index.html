@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>demo</title>
+  <meta name="generator" content="Google Web Designer 7.1.1.1210">
+  <style type="text/css" id="gwd-text-style">
+    p {
+      margin: 0px;
+    }
+
+    h1 {
+      margin: 0px;
+    }
+
+    h2 {
+      margin: 0px;
+    }
+
+    h3 {
+      margin: 0px;
+    }
+  </style>
+  <style type="text/css">
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+    }
+
+    body {
+      background-color: transparent;
+      transform: perspective(1400px) matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      transform-style: preserve-3d;
+    }
+
+    .gwd-p-8j4j {
+      position: absolute;
+      width: 140px;
+      height: 101px;
+      transform-origin: 70px 50.5px 0px;
+      text-align: left;
+      left: 71px;
+      top: 83px;
+    }
+  </style>
+</head>
+
+<body class="htmlNoPages" onload="getKeyPair()">
+  <div class="gwd-p-8j4j">
+    First number: <input type="number" id="first_number" value="0"></input> <br>
+    Second number: <input type="number" id="second_number" value="0"></input><br>
+    <button onclick="exec()">Add!</button> <br>
+    Result: <div id="result"></div>
+  </div>
+  <script>
+    function getKeyPair() {
+      let keyPair;
+      if (window.localStorage.hasOwnProperty('keyPair')) {
+        const keyPairAsObj = JSON.parse(window.localStorage.getItem('keyPair'));
+        keyPair = paillier.loadKeyPair(keyPairAsObj);
+      } else {
+        keyPair = paillier.createKeyPair(256);
+        window.localStorage.setItem('keyPair', JSON.stringify(keyPair));
+      }
+      return keyPair;
+    }
+
+    async function exec() {
+      const first = parseInt(document.getElementById("first_number").value);
+      const second = parseInt(document.getElementById("second_number").value);
+      console.log(`first: ${first}`);
+      console.log(`second: ${second}`);
+      const result = await computeSum(first, second);
+      console.log(`Result: ${result}`);
+      document.getElementById("result").innerHTML = result;
+    }
+
+    async function computeSum(plain1, plain2) {
+      const keyPair = getKeyPair();
+      const cipher1 = paillier.encrypt(keyPair.pub, plain1);
+      const cipher2 = paillier.encrypt(keyPair.pub, plain2);
+      const post = await fetch('/sum', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          pub: keyPair.pub,
+          cipher1: cipher1,
+          cipher2: cipher2
+        })
+      })
+      const response = await post.json();
+      const cipherResult = response.result;
+      const plainResult = paillier.decrypt(keyPair.priv, cipherResult);
+      return plainResult;
+    }
+  </script>
+  <script src="bundle.js"></script>
+</body>
+
+</html>
